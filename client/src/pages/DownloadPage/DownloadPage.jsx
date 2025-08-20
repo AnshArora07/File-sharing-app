@@ -1,30 +1,36 @@
-import { useParams } from "react-router-dom";
+import React from "react";
 import "./DownloadPage.css";
 
-export default function DownloadPage() {
-  const { id } = useParams();
-  // placeholder UI until you integrate API
-  return (
-    <div className="page download-page">
-      <h1>Download Page</h1>
-      <div className="file-card">
-        <div className="file-meta">
-          <div className="file-name">File name: <strong>example.pdf</strong></div>
-          <div className="file-size">Size: 200 KB</div>
-          <div className="expires">
-            Expires in: <strong>--:--:--</strong> {/* placeholder countdown */}
-          </div>
-          <div className="download-count">Downloads: 0</div>
-        </div>
-        <div className="actions">
-          <button className="btn btn-download" disabled>
-            Download
-          </button>
-          <div className="hint">Link ID: <code>{id}</code></div>
-        </div>
-      </div>
+const DownloadPage = () => {
+  // Static data for now (replace with API later)
+  const file = {
+    filename: "project-report.zip",
+    size: "5 MB",
+    expiresIn: "23 hours",
+    isExpired: false,
+  };
 
-      <p className="note">This is a placeholder UI — you will wire up API calls to fetch metadata and trigger download.</p>
+  return (
+    <div className="download-container">
+      <div className="download-card">
+        <h1 className="title">Download Your File</h1>
+
+        {!file.isExpired ? (
+          <>
+            <div className="file-info">
+              <p className="filename">📂 {file.filename}</p>
+              <p className="filesize">Size: {file.size}</p>
+              <p className="expiry">⏳ Expires in: {file.expiresIn}</p>
+            </div>
+
+            <button className="download-btn">⬇ Download File</button>
+          </>
+        ) : (
+          <p className="expired-msg">❌ This link has expired</p>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default DownloadPage;
