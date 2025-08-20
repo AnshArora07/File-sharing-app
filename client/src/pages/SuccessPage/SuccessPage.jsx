@@ -1,20 +1,3 @@
-<<<<<<< Updated upstream
-import { Link, useParams } from "react-router-dom";
-import "./SuccessPage.css";
-
-export default function SuccessPage() {
-  // For now just read :id if route navigation uses it
-  const { id } = useParams();
-  const fileId = id || "sample-id-123";
-
-  return (
-    <div className="page success-page">
-      <h1>Success Page (placeholder)</h1>
-      <p>After upload, this page will show the shareable link.</p>
-      <p>Sample link: <code>/file/{fileId}</code></p>
-      <div style={{ marginTop: 12 }}>
-        <Link to={`/file/${fileId}`}>Open Download Page for {fileId}</Link>
-=======
 import React, { useState, useEffect } from 'react';
 import { Copy, Mail, Check, Share2, FileText, Clock, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';  
@@ -79,8 +62,8 @@ const SuccessPage = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
 
-    
-    navigate('/file/:id');
+    // ✅ Redirect to download page after copying
+    navigate(`/file/${fileData.id}`);
   };
 
   const sendEmail = async () => {
@@ -110,13 +93,13 @@ const SuccessPage = () => {
 
   return (
     <div className="success-wrapper">
-      {}
+      {/* Floating background icons */}
       <FileText className="bg-icon icon1" size={60} />
       <Clock className="bg-icon icon2" size={70} />
       <Share2 className="bg-icon icon3" size={50} />
       <Copy className="bg-icon icon4" size={65} />
 
-      {}
+      {/* Main Card */}
       <div className="success-card">
         <h2 className="title">File Uploaded Successfully 🎉</h2>
         <p className="file-info">
@@ -152,14 +135,15 @@ const SuccessPage = () => {
           )}
         </div>
 
-        
+        {/* ✅ Back Button */}
         <div className="back-btn-container">
           <button onClick={() => navigate('/')} className="btn back">
             <ArrowLeft size={16} /> Back to Upload
           </button>
         </div>
->>>>>>> Stashed changes
       </div>
     </div>
   );
-}
+};
+
+export default SuccessPage;
