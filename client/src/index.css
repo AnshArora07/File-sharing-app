@@ -1,0 +1,5 @@
+/* simple reset + base */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f7fafc; color: #111827; }
+a { color: inherit; }
+.page { max-width: 980px; margin: 36px auto; }
