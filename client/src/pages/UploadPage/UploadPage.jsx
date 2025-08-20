@@ -13,7 +13,7 @@ const UploadPage = () => {
 
   const fileInputRef = useRef(null);
   const dropZoneRef = useRef(null);
-  const navigate = useNavigate();   // ✅ FIX: initialize navigate
+  const navigate = useNavigate();
 
   const getFileIcon = (fileName) => {
     const extension = fileName.split('.').pop().toLowerCase();
