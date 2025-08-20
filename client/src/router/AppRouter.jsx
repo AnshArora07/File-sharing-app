@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UploadPage from "../pages/UploadPage/UploadPage";
 import SuccessPage from "../pages/SuccessPage/SuccessPage";
 import DownloadPage from "../pages/DownloadPage/DownloadPage";
-import Header from "../pages/header/Header";
 
 export default function AppRouter() {
   return (
