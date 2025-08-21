@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Copy, Mail, Check, Share2, FileText, Clock, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';  // ✅ Import useNavigate
+import { useNavigate } from 'react-router-dom';  
 import './SuccessPage.css';
 
 const SuccessPage = () => {
@@ -19,7 +19,7 @@ const SuccessPage = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [timeLeft, setTimeLeft] = useState('');
 
-  const navigate = useNavigate(); // ✅ Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const updateTimeLeft = () => {
@@ -50,8 +50,6 @@ const SuccessPage = () => {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(fileData.downloadLink);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       const textArea = document.createElement('textarea');
       textArea.value = fileData.downloadLink;
@@ -59,9 +57,13 @@ const SuccessPage = () => {
       textArea.select();
       document.execCommand('copy');
       document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     }
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+
+    // ✅ Redirect to download page after copying
+    navigate(`/file/${fileData.id}`);
   };
 
   const sendEmail = async () => {
