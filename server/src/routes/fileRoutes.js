@@ -5,6 +5,11 @@ import File from "../models/file.js";
 
 const router = express.Router();
 
+// connection
+router.get("/test", (req, res) => {
+  res.json({ message: "Frontend ↔ Backend connected ✅" });
+});
+
 // Multer config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),

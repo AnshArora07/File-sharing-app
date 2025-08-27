@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { Upload, X, FileText, Image, Archive, File, Clock, Shield, Check } from 'lucide-react';
+import axios from "axios";
 import './UploadPage.css';
 
 const UploadPage = () => {
@@ -78,33 +79,36 @@ const UploadPage = () => {
     }
   };
 
+  // ✅ Corrected handleUpload
   const handleUpload = async () => {
     if (!selectedFile || !agreedToTerms) return;
     setIsUploading(true);
     setUploadProgress(0);
 
-    const progressInterval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 90) {
-          clearInterval(progressInterval);
-          return prev;
-        }
-        return prev + Math.random() * 20;
-      });
-    }, 200);
-
     try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("expiryHours", expiryHours);
+
+      const response = await axios.post("/files/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percent);
+        }
+      });
+
+      // ✅ backend returns { file: { uuid: "..." } }
+      const { file } = response.data;
+
+      setUploadProgress(100);
       setTimeout(() => {
-        setUploadProgress(100);
-        setTimeout(() => {
-          // ✅ redirect after successful upload
-          const fileId = "12345"; 
-          navigate(`/success/:id`);
-        }, 500);
-      }, 2000);
+        navigate(`/success/${file.uuid}`); // redirect with uuid
+      }, 500);
+
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
+      console.error("Upload failed:", error);
+      alert("Upload failed. Please try again.");
       setIsUploading(false);
       setUploadProgress(0);
     }
@@ -199,7 +203,7 @@ const UploadPage = () => {
                 I agree that my file will be automatically deleted after expiry.
               </label>
               <button
-                onClick={handleUpload}   // ✅ FIX: call handleUpload, not navigate directly
+                onClick={handleUpload}   
                 disabled={isUploadDisabled}
                 className="btn-upload">
                 {isUploading ? 'Uploading...' : 'Upload & Get Link'}
