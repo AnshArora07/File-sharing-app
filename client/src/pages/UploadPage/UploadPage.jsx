@@ -178,7 +178,7 @@ const UploadPage = () => {
 
             {/* Expiry */}
             <div className="expiry">
-              <h3><Clock /> Link Expiry</h3>
+              <h3><Clock/> Link Expiry</h3>
               <div className="expiry-buttons">
                 {[1, 6, 12, 24].map((hours) => (
                   <button
@@ -212,18 +212,41 @@ const UploadPage = () => {
           </div>
         </div>
 
-        {/* Features */}
+{/* Features */}
         <div className="card">
-          <div className="card-body features">
-            <h3><Shield /> Why Choose Us?</h3>
+          <div className="card-body">
+            <h3 className="section-title">
+              <Shield style={{ width: '1.25rem', height: '1.25rem', color: '#10b981' }} />
+              <span>Why Choose Our File Sharing?</span>
+            </h3>
+            
             <div className="features-grid">
-              <div><Shield /> <p>Secure & Private</p></div>
-              <div><Clock /> <p>Time-Limited</p></div>
-              <div><Check /> <p>No Registration</p></div>
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <Shield style={{ width: '1.5rem', height: '1.5rem', color: '#10b981' }} />
+                </div>
+                <h4>Secure & Private</h4>
+                <p>Your files are encrypted and automatically deleted after expiry</p>
+              </div>
+              
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <Clock style={{ width: '1.5rem', height: '1.5rem', color: '#3b82f6' }} />
+                </div>
+                <h4>Time-Limited</h4>
+                <p>Links expire automatically to keep your data safe</p>
+              </div>
+              
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <Check style={{ width: '1.5rem', height: '1.5rem', color: '#8b5cf6' }} />
+                </div>
+                <h4>No Registration</h4>
+                <p>Start sharing immediately without creating an account</p>
+              </div>
             </div>
           </div>
         </div>
-
         {/* Footer */}
         <p className="footer">By using this service, you agree to our Terms of Service and Privacy Policy</p>
       </div>
