@@ -3,7 +3,7 @@ node_modules/
 
 # Build outputs
 client/build/
-server/uploads/
+#server/uploads/
 
 # Logs
 logs
@@ -15,7 +15,7 @@ yarn-error.log*
 # Environment variables
 .env
 client/.env
-server/.env
+#server/.env
 
 # OS files
 .DS_Store

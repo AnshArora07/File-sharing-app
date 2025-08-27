@@ -176,7 +176,7 @@ const UploadPage = () => {
             <div className="expiry">
               <h3><Clock /> Link Expiry</h3>
               <div className="expiry-buttons">
-                {[1, 6, 12, 24, 48, 72].map((hours) => (
+                {[1, 6, 12, 24].map((hours) => (
                   <button
                     key={hours}
                     className={expiryHours === hours ? 'active' : ''}
