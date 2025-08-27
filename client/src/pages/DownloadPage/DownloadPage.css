@@ -1,82 +1,81 @@
-/* Background with gradient */
+/* Themed background */
 .download-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /**background: linear-gradient(135deg, #667eea, #764ba2); **/
-  background-color: antiquewhite;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='2'><circle cx='40' cy='40' r='14'/><rect x='120' y='120' width='28' height='18' rx='4'/><circle cx='135' cy='125' r='6'/><circle cx='145' cy='130' r='5'/><circle cx='30' cy='150' r='3'/><circle cx='170' cy='60' r='3'/></svg>"), linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed, fixed;
+  background-size: 220px 220px, auto;
+  background-position: center top, left top;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
 }
 
-/* Glassmorphism card */
+/* Glass card */
 .download-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1.25rem;
   padding: 40px 30px;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
   text-align: center;
-  color: #080505;
-  max-width: 400px;
+  color: #111827;
+  max-width: 480px;
   width: 100%;
 }
 
 /* Title styling */
 .title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 25px;
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #ffffff, #dbeafe, #f5d0fe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* File info */
-.file-info {
-  margin-bottom: 20px;
-}
-
-.filename {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 10px 0;
-}
-
-.filesize,
-.expiry {
-  font-size: 1rem;
-  margin: 6px 0;
-  opacity: 0.9;
-}
+.file-info { margin-bottom: 20px; }
+.filename { font-size: 1.1rem; font-weight: 700; margin: 10px 0; }
+.filesize, .expiry { font-size: 1rem; margin: 6px 0; color: #4b5563; }
 
 /* Download button */
 .download-btn {
   margin-top: 15px;
-  background: #ff8c42;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   border: none;
   padding: 14px 22px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.25s ease;
-  box-shadow: 0px 4px 12px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.25);
 }
 
 .download-btn:hover {
-  background: #ff6a00;
   transform: translateY(-2px);
-  box-shadow: 0px 6px 16px rgba(255, 140, 66, 0.6);
+  box-shadow: 0 14px 30px rgba(16, 185, 129, 0.35);
 }
 
 /* Expired message */
 .expired-msg {
-  color: #ff4c4c;
-  font-weight: bold;
-  font-size: 1.2rem;
-  background: rgba(255, 0, 0, 0.1);
+  color: #b91c1c;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: rgba(185, 28, 28, 0.08);
   padding: 10px 15px;
-  border-radius: 8px;
+  border-radius: 10px;
   display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .download-card { padding: 28px 20px; }
+  .title { font-size: 1.6rem; }
 }

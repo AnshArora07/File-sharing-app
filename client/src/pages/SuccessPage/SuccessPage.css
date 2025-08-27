@@ -1,20 +1,50 @@
-/* Full screen wrapper */
+/* Themed full screen wrapper */
 .success-wrapper {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #ffffff; /* White clean background */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='2'><circle cx='40' cy='40' r='14'/><rect x='120' y='120' width='28' height='18' rx='4'/><circle cx='135' cy='125' r='6'/><circle cx='145' cy='130' r='5'/><circle cx='30' cy='150' r='3'/><circle cx='170' cy='60' r='3'/></svg>"), linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed, fixed;
+  background-size: 220px 220px, auto;
+  background-position: center top, left top;
   padding: 20px;
   overflow: hidden;
+}
+
+/* Animated background blobs */
+.success-wrapper::before,
+.success-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.25;
+  z-index: 0;
+}
+
+.success-wrapper::before {
+  top: -120px;
+  left: -120px;
+  background: radial-gradient(circle at 30% 30%, #60a5fa, transparent 60%);
+  animation: floatBlob 12s ease-in-out infinite;
+}
+
+.success-wrapper::after {
+  bottom: -140px;
+  right: -140px;
+  background: radial-gradient(circle at 70% 70%, #a78bfa, transparent 60%);
+  animation: floatBlob 14s ease-in-out infinite reverse;
 }
 
 /* Floating background icons */
 .bg-icon {
   position: absolute;
   opacity: 0.08;
-  color: #2575fc;
+  color: #ffffff;
   z-index: 0;
 }
 .icon1 { top: 15%; left: 10%; }
@@ -24,29 +54,35 @@
 
 /* Card in center */
 .success-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1.25rem;
   padding: 40px 30px;
-  border-radius: 14px;
-  max-width: 500px;
+  max-width: 520px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 2;
   animation: fadeIn 0.6s ease-in-out;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #222;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #ffffff, #dbeafe, #f5d0fe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .file-info {
   font-size: 16px;
   margin: 8px 0;
-  color: #444;
+  color: #374151;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +92,7 @@
 .expiry {
   margin-bottom: 20px;
   font-size: 14px;
-  color: #777;
+  color: #6b7280;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,131 +111,80 @@
 .btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 18px;
+  gap: 8px;
+  padding: 12px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: transform 0.2s, background 0.3s;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
   color: #fff;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
+.btn:hover { transform: translateY(-2px); }
 
 .btn.primary {
-  background: #2575fc;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  box-shadow: 0 10px 22px rgba(59, 130, 246, 0.25);
 }
-.btn.primary:hover {
-  background: #1a5cd6;
-}
+.btn.primary:hover { box-shadow: 0 14px 28px rgba(59, 130, 246, 0.35); }
 
 .btn.secondary {
-  background: #6a11cb;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow: 0 10px 22px rgba(139, 92, 246, 0.25);
 }
-.btn.secondary:hover {
-  background: #520ea1;
-}
+.btn.secondary:hover { box-shadow: 0 14px 28px rgba(139, 92, 246, 0.35); }
 
 .btn.warning {
-  background: #f39c12;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 10px 22px rgba(245, 158, 11, 0.25);
 }
-.btn.warning:hover {
-  background: #d68910;
-}
+.btn.warning:hover { box-shadow: 0 14px 28px rgba(245, 158, 11, 0.35); }
 
 /* Email input */
 .email-section {
   margin-top: 20px;
   display: flex;
-  flex-direction: column; /* stack input and button vertically */
-  align-items: center;    /* center horizontally */
-  gap: 10px;              /* space between input and button */
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .email-input {
-  width: 80%;             /* make input bigger and centered */
-  max-width: 300px;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  width: 80%;
+  max-width: 320px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
 }
 
-.btn.warning {
-  background-color: #ffb347;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background 0.2s ease;
-}
+.success-msg { color: #065f46; font-weight: 600; }
 
-.btn.warning:hover {
-  background-color: #ff9f1c;
-}
-
-
-/* Responsive */
-@media (max-width: 600px) {
-  .success-card {
-    padding: 25px 18px;
-  }
-
-  .email-input {
-    width: 100%;
-    margin-bottom: 12px;
-  }
-
-  .email-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-}
-.back-btn-container {
-  margin-top: 20px;
-  text-align: center;
-}
+.back-btn-container { margin-top: 20px; text-align: center; }
 
 .btn.back {
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-  padding: 8px 14px;
-  border-radius: 8px;
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
 }
+.btn.back:hover { background: #e5e7eb; }
 
-.btn.back:hover {
-  background-color: #e2e2e2;
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes floatBlob {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(20px, -10px, 0) scale(1.06); }
 }

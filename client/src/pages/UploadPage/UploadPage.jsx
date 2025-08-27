@@ -19,13 +19,13 @@ const UploadPage = () => {
   const getFileIcon = (fileName) => {
     const extension = fileName.split('.').pop().toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(extension)) {
-      return <Image className="icon green" />;
+      return <Image className="file-icon file-icon-green" />;
     } else if (['zip', 'rar', '7z', 'tar', 'gz'].includes(extension)) {
-      return <Archive className="icon purple" />;
+      return <Archive className="file-icon file-icon-purple" />;
     } else if (['pdf', 'doc', 'docx', 'txt'].includes(extension)) {
-      return <FileText className="icon blue" />;
+      return <FileText className="file-icon file-icon-blue" />;
     }
-    return <File className="icon gray" />;
+    return <File className="file-icon file-icon-gray" />;
   };
 
   const formatFileSize = (bytes) => {
@@ -79,6 +79,19 @@ const UploadPage = () => {
     }
   };
 
+  const handleDropZoneClick = () => {
+    if (!selectedFile) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleDropZoneKeyDown = (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && !selectedFile) {
+      e.preventDefault();
+      fileInputRef.current?.click();
+    }
+  };
+
   // ✅ Corrected handleUpload
   const handleUpload = async () => {
     if (!selectedFile || !agreedToTerms) return;
@@ -93,7 +106,9 @@ const UploadPage = () => {
       const response = await axios.post("/files/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (progressEvent) => {
-          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          const loaded = progressEvent?.loaded ?? 0;
+          const total = progressEvent?.total ?? 0;
+          const percent = total > 0 ? Math.round((loaded * 100) / total) : (loaded > 0 ? 100 : 0);
           setUploadProgress(percent);
         }
       });
@@ -138,15 +153,27 @@ const UploadPage = () => {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={`drop-zone ${isDragging ? 'dragging' : selectedFile ? 'selected' : ''}`}
+              onClick={handleDropZoneClick}
+              onKeyDown={handleDropZoneKeyDown}
+              role="button"
+              tabIndex={0}
+              aria-label={selectedFile ? 'File selected' : 'Click to select a file or drag and drop'}
             >
               {selectedFile ? (
                 <div className="file-info">
                   <div className="file-details">
                     {getFileIcon(selectedFile.name)}
-                    <div>
+                    <div className="file-meta">
                       <p className="file-name">{selectedFile.name}</p>
                       <p className="file-size">{formatFileSize(selectedFile.size)}</p>
                     </div>
+                    {selectedFile.type?.startsWith('image/') && (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Selected preview"
+                        className="file-thumb"
+                      />
+                    )}
                     <button onClick={removeFile} className="remove-btn">
                       <X />
                     </button>
@@ -154,8 +181,10 @@ const UploadPage = () => {
 
                   {isUploading && (
                     <div className="progress">
-                      <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
-                      <p>Uploading... {Math.round(uploadProgress)}%</p>
+                      <div className="progress-bar-container" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(uploadProgress)} role="progressbar">
+                        <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
+                      </div>
+                      <p className="progress-text">Uploading... {Math.round(uploadProgress)}%</p>
                     </div>
                   )}
                 </div>
@@ -166,7 +195,7 @@ const UploadPage = () => {
                   <span>Support for any file type • Max size: 100MB</span>
                   <div className="choose-file-btn">
                     <button
-                      onClick={() => fileInputRef.current?.click()}
+                      onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
                       className="btn-primary">
                       Choose File
                     </button>
@@ -185,6 +214,7 @@ const UploadPage = () => {
                     key={hours}
                     className={expiryHours === hours ? 'active' : ''}
                     onClick={() => setExpiryHours(hours)}
+                    aria-pressed={expiryHours === hours}
                   >
                     {hours === 1 ? '1 Hour' : `${hours} Hours`}
                   </button>
@@ -193,14 +223,14 @@ const UploadPage = () => {
             </div>
 
             {/* Terms + Upload */}
-            <div className="terms">
+            <div className="terms terms-checkbox">
               <label>
                 <input
                   type="checkbox"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
                 />
-                I agree that my file will be automatically deleted after expiry.
+                <span className="terms-text">I agree that my file will be automatically deleted after expiry.</span>
               </label>
               <button
                 onClick={handleUpload}   
