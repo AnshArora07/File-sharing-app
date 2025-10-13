@@ -2,11 +2,16 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
 import fileRoutes from "./src/routes/fileRoutes.js";
+import cors from "cors"; // ✅ import cors
 
 dotenv.config();
 connectDB();
 
 const app = express();
+
+
+// ✅ Enable CORS (default allows all origins)
+app.use(cors());
 
 app.use(express.json());
 app.use("/uploads", express.static("uploads")); // serve uploaded files
