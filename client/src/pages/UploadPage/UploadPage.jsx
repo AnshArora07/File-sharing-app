@@ -92,7 +92,7 @@ const UploadPage = () => {
     }
   };
 
-  // ✅ Corrected handleUpload
+  // ✅ Fixed handleUpload (match backend response)
   const handleUpload = async () => {
     if (!selectedFile || !agreedToTerms) return;
     setIsUploading(true);
@@ -103,22 +103,28 @@ const UploadPage = () => {
       formData.append("file", selectedFile);
       formData.append("expiryHours", expiryHours);
 
-      const response = await axios.post("/files/upload", formData, {
+     const response =  await axios.post("http://localhost:5000/files/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (progressEvent) => {
           const loaded = progressEvent?.loaded ?? 0;
           const total = progressEvent?.total ?? 0;
-          const percent = total > 0 ? Math.round((loaded * 100) / total) : (loaded > 0 ? 100 : 0);
+          const percent =
+            total > 0
+              ? Math.round((loaded * 100) / total)
+              : loaded > 0
+              ? 100
+              : 0;
           setUploadProgress(percent);
-        }
+        },
       });
 
-      // ✅ backend returns { file: { uuid: "..." } }
+      // ✅ Backend returns { file: {...} }
       const { file } = response.data;
 
       setUploadProgress(100);
       setTimeout(() => {
-        navigate(`/success/${file.uuid}`); // redirect with uuid
+       navigate(`/success/${file.uuid}`, { state: { file } });
+// redirect with uuid
       }, 500);
 
     } catch (error) {
@@ -181,10 +187,21 @@ const UploadPage = () => {
 
                   {isUploading && (
                     <div className="progress">
-                      <div className="progress-bar-container" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(uploadProgress)} role="progressbar">
-                        <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
+                      <div
+                        className="progress-bar-container"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={Math.round(uploadProgress)}
+                        role="progressbar"
+                      >
+                        <div
+                          className="progress-bar"
+                          style={{ width: `${uploadProgress}%` }}
+                        />
                       </div>
-                      <p className="progress-text">Uploading... {Math.round(uploadProgress)}%</p>
+                      <p className="progress-text">
+                        Uploading... {Math.round(uploadProgress)}%
+                      </p>
                     </div>
                   )}
                 </div>
@@ -195,19 +212,30 @@ const UploadPage = () => {
                   <span>Support for any file type • Max size: 100MB</span>
                   <div className="choose-file-btn">
                     <button
-                      onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-                      className="btn-primary">
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        fileInputRef.current?.click();
+                      }}
+                      className="btn-primary"
+                    >
                       Choose File
                     </button>
                   </div>
                 </div>
               )}
-              <input ref={fileInputRef} type="file" onChange={handleFileInputChange} className="hidden" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                onChange={handleFileInputChange}
+                className="hidden"
+              />
             </div>
 
             {/* Expiry */}
             <div className="expiry">
-              <h3><Clock/> Link Expiry</h3>
+              <h3>
+                <Clock /> Link Expiry
+              </h3>
               <div className="expiry-buttons">
                 {[1, 6, 12, 24].map((hours) => (
                   <button
@@ -230,46 +258,58 @@ const UploadPage = () => {
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
                 />
-                <span className="terms-text">I agree that my file will be automatically deleted after expiry.</span>
+                <span className="terms-text">
+                  I agree that my file will be automatically deleted after
+                  expiry.
+                </span>
               </label>
               <button
-                onClick={handleUpload}   
+                onClick={handleUpload}
                 disabled={isUploadDisabled}
-                className="btn-upload">
+                className="btn-upload"
+              >
                 {isUploading ? 'Uploading...' : 'Upload & Get Link'}
               </button>
             </div>
           </div>
         </div>
 
-{/* Features */}
+        {/* Features */}
         <div className="card">
           <div className="card-body">
             <h3 className="section-title">
-              <Shield style={{ width: '1.25rem', height: '1.25rem', color: '#10b981' }} />
+              <Shield
+                style={{ width: '1.25rem', height: '1.25rem', color: '#10b981' }}
+              />
               <span>Why Choose Our File Sharing?</span>
             </h3>
-            
+
             <div className="features-grid">
               <div className="feature-item">
                 <div className="feature-icon">
-                  <Shield style={{ width: '1.5rem', height: '1.5rem', color: '#10b981' }} />
+                  <Shield
+                    style={{ width: '1.5rem', height: '1.5rem', color: '#10b981' }}
+                  />
                 </div>
                 <h4>Secure & Private</h4>
                 <p>Your files are encrypted and automatically deleted after expiry</p>
               </div>
-              
+
               <div className="feature-item">
                 <div className="feature-icon">
-                  <Clock style={{ width: '1.5rem', height: '1.5rem', color: '#3b82f6' }} />
+                  <Clock
+                    style={{ width: '1.5rem', height: '1.5rem', color: '#3b82f6' }}
+                  />
                 </div>
                 <h4>Time-Limited</h4>
                 <p>Links expire automatically to keep your data safe</p>
               </div>
-              
+
               <div className="feature-item">
                 <div className="feature-icon">
-                  <Check style={{ width: '1.5rem', height: '1.5rem', color: '#8b5cf6' }} />
+                  <Check
+                    style={{ width: '1.5rem', height: '1.5rem', color: '#8b5cf6' }}
+                  />
                 </div>
                 <h4>No Registration</h4>
                 <p>Start sharing immediately without creating an account</p>
@@ -277,8 +317,12 @@ const UploadPage = () => {
             </div>
           </div>
         </div>
+
         {/* Footer */}
-        <p className="footer">By using this service, you agree to our Terms of Service and Privacy Policy</p>
+        <p className="footer">
+          By using this service, you agree to our Terms of Service and Privacy
+          Policy
+        </p>
       </div>
     </div>
   );

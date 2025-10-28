@@ -8,7 +8,8 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<UploadPage />} />
-        <Route path="/success/:id" element={<SuccessPage />} />
+       <Route path="/success/:uuid" element={<SuccessPage />} />
+
         <Route path="/file/:id" element={<DownloadPage />} />
       </Routes>
     </BrowserRouter>
